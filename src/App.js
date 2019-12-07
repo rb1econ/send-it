@@ -41,6 +41,7 @@ function App() {
     return userOptions.map(user => {
       return (
         <button
+          data-testid="user-button"
           key={user.id}
           onClick={selectUser(user.id)}
         >{`${user.username}`}</button>
@@ -53,6 +54,7 @@ function App() {
       .map(user => {
         return (
           <button
+            data-testid="recipient-button"
             key={user.id}
             onClick={selectRecipient(user.id)}
           >{`${user.username}`}</button>
@@ -66,14 +68,15 @@ function App() {
         {userRecipient.user ? (
           userRecipient.recipient ? (
             <>
-              <Messaging {...userRecipient} />
+              <Messaging data-testid="messaging-component" {...userRecipient} />
               <div>
-                <p>Select a Recipient</p>
+                <p>Select a Different Recipient</p>
                 {displayRecipientButtons(userRecipient.user.id)}
               </div>
             </>
           ) : (
             <div>
+              <h2>Hello {userRecipient.user.username}</h2>
               <p>Select a Recipient</p>
               {displayRecipientButtons(userRecipient.user.id)}
             </div>
@@ -86,6 +89,7 @@ function App() {
               width: 500,
               height: 500
             }}
+            data-testid="select-user"
           >
             <p>Select a user:</p>
             {displayUserButtons()}
