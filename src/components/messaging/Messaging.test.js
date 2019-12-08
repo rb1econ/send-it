@@ -28,19 +28,16 @@ describe("sending messages", () => {
   });
   it("should enable the Send It button when text is present in input", async () => {
     const userRecipient = { user: testUser, recipient: testRecipient };
+    const testText = "this is message text";
     let container;
     act(() => {
       container = render(<Messaging {...userRecipient} />);
     });
     expect(container.getByText("SEND IT").disabled).toBe(true);
     act(() => {
-      const changeRes = fireEvent.change(
-        container.getByLabelText("Your New Message Here:"),
-        {
-          target: { value: "this is message text" }
-        }
-      );
-      console.log("changeRes", changeRes);
+      fireEvent.change(container.getByLabelText("Your New Message Here:"), {
+        target: { value: testText }
+      });
     });
 
     const sendButton = container.getByTestId("send-it");
@@ -49,7 +46,17 @@ describe("sending messages", () => {
       fireEvent.click(container.getByTestId("send-it"));
     });
     expect(messagesDAO.add.mock.calls.length).toBe(1);
-    expect(
+    const addArg = messagesDAO.add.mock.calls[0][0];
+    expect(addArg.createdAt instanceof Date).toBe(true);
+    expect(typeof addArg.id).toBe("string");
+    delete addArg.id;
+    delete addArg.createdAt;
+    expect(addArg).toEqual({
+      text: testText,
+      userId: testUser.id,
+      recipientId: testRecipient.id
+    });
+    delete expect(
       await wait(() => container.getByLabelText("Your New Message Here:").value)
     ).toBeFalsy();
   });
