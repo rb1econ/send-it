@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import shortid from "shortid";
-import messagesDAO from "../dao/messagesDAO.js";
+import messagesDAO from "../../dao/messagesDAO.js";
 import { MessageContainer } from "./MessageContainer";
-import { db } from "../firebase.js";
+import { db } from "../../firebase.js";
 
 const MESSAGES_COLLECTION = "messages";
 

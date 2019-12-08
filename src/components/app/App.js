@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import shortid from "shortid";
-import logo from "./logo.svg";
+import logo from "../../logo.svg";
 import "./App.css";
 
-import { db } from "./firebase.js";
+import { db } from "../../firebase.js";
 
-import { Messaging } from "./components/Messaging";
+import { Messaging } from "../messaging/Messaging";
 
 function App() {
   // const [state, setState] = useReducer(

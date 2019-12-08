@@ -32,5 +32,5 @@ async function add(currentMessage) {
   await db.collection(MESSAGES_COLLECTION).add(currentMessage);
 }
 
-const messageDAO = { add, loadMessages };
-export default messageDAO;
+const messagesDAO = { add, loadMessages };
+export default messagesDAO;

@@ -11,7 +11,7 @@ import {
 } from "@testing-library/react";
 // import { act } from "react-dom/test-utils";
 import { combineLatest, Observable } from "rxjs";
-import messagesDAO from "../dao/messagesDAO.js";
+import messagesDAO from "../../dao/messagesDAO.js";
 import { Messaging } from "./Messaging";
 
 const testUser = { username: "Test User One", id: "testUserId1" };
@@ -53,4 +53,5 @@ describe("sending messages", () => {
       await wait(() => container.getByLabelText("Your New Message Here:").value)
     ).toBeFalsy();
   });
+  it("should handle change to recipient by unsubscribing to observable and re-subscribing", () => {});
 });
