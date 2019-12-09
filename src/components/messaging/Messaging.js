@@ -50,7 +50,7 @@ function Messaging({ user, recipient }) {
     setCurrentText(e.target.value);
   };
   return (
-    <div style={{ width: "500px", maxHeight: "80vh" }}>
+    <div style={{ width: "500px" }}>
       <h3>
         Messages from {user.username} to {recipient.username}
       </h3>
