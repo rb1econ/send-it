@@ -1,9 +1,5 @@
 import React, { useState } from "react";
-import shortid from "shortid";
-import logo from "../../logo.svg";
 import "./App.css";
-
-import { db } from "../../firebase.js";
 
 import { Messaging } from "../messaging/Messaging";
 
@@ -57,10 +53,6 @@ function App() {
         );
       });
   }
-  const marginAuto = {
-    marginLeft: "auto",
-    marginRight: "auto"
-  };
   return (
     <div className="App">
       <h1>Send It</h1>

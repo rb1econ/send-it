@@ -1,17 +1,14 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import moment from "moment";
-// import "@testing-library/jest-dom/extend-expect";
 import {
   act,
   testHook,
   render,
   fireEvent,
-  // getByTestId,
   rerender,
   wait
 } from "@testing-library/react";
-// import { act } from "react-dom/test-utils";
 import { combineLatest, Observable } from "rxjs";
 import messagesDAO from "../../dao/messagesDAO.js";
 import { Messaging } from "./Messaging";
