@@ -1,5 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import moment from "moment";
+// import "@testing-library/jest-dom/extend-expect";
 import {
   act,
   testHook,
@@ -14,12 +16,55 @@ import { combineLatest, Observable } from "rxjs";
 import messagesDAO from "../../dao/messagesDAO.js";
 import { Messaging } from "./Messaging";
 
-const testUser = { username: "Test User One", id: "testUserId1" };
-const testRecipient = { username: "Test User Two", id: "testUserId2" };
-
 describe("Messaging component", () => {
+  const testUser = { username: "Test User One", id: "testUserId1" };
+  const testRecipient = { username: "Test User Two", id: "testUserId2" };
+  const userRecipient = { user: testUser, recipient: testRecipient };
+  describe("messages useEffect and listing", () => {
+    it("should flatten and sort the array or messages", async () => {
+      messagesDAO.add = jest.fn(() => Promise.resolve());
+      const messageThree = {
+        id: "messageId3",
+        text: "third message",
+        createdAt: new Date()
+      };
+      const messageOne = {
+        id: "messageId1",
+        text: "first message",
+        createdAt: moment(new Date())
+          .subtract(3, "hour")
+          .toDate()
+      };
+      const messageTwo = {
+        id: "messageId2",
+        text: "second message",
+        createdAt: moment(new Date())
+          .subtract(2, "hour")
+          .toDate()
+      };
+
+      // mocking out combineLatest implementation
+      const messageData = [[messageTwo], [messageOne, messageThree]];
+      messagesDAO.loadMessages = jest.fn(() => {
+        return {
+          subscribe: cb => {
+            cb(messageData);
+            return { unsubscribe: () => {} };
+          }
+        };
+      });
+      let container;
+      act(() => {
+        container = render(<Messaging {...userRecipient} />);
+      });
+      const messageList = await container.getAllByTestId("message-li");
+      expect(messageList.length).toBe(3);
+      expect(messageList[0].textContent.includes(messageOne.text)).toBe(true);
+      expect(messageList[1].textContent.includes(messageTwo.text)).toBe(true);
+      expect(messageList[2].textContent.includes(messageThree.text)).toBe(true);
+    });
+  });
   describe("sending and recieving messages", () => {
-    const userRecipient = { user: testUser, recipient: testRecipient };
     const testText = "this is message text";
     beforeEach(() => {
       messagesDAO.add = jest.fn(() => Promise.resolve());

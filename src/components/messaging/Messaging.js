@@ -17,6 +17,7 @@ function Messaging({ user, recipient }) {
       const flattenedArray = []
         .concat(...messages)
         .map(m => {
+          // handle firestore timestamps and messages already modified
           if (!(m.createdAt instanceof Date)) {
             m.createdAt = m.createdAt.toDate();
           }
