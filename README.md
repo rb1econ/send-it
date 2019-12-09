@@ -6,7 +6,7 @@ Very, very little time was spent on styles and layout. If I were to prioritize f
 
 There are three hardcoded users, which I found made for more realistic messaging and user logic than if there were only two. This means that the app could be very easily refactored and iterated on to have many more than three users.
 
-The tests are written with the help of react testing library -- which I found far more developer friendly than by brief experience with enzyme. Most of the tests stub out the DOA functions which are unit tested independently; so no actual db transactions occur when running yarn test. A more end-to-end test suite would involve setting up the firestore emulator.
+The tests are written with the help of react testing library -- which I found far more developer friendly than my brief experience with enzyme. Most of the tests stub out the DOA functions which are unit tested independently; so no actual db transactions occur when running yarn test. A more end-to-end test suite would involve setting up the firestore emulator.
 
 This app makes use of hooks rather than class components.
 
