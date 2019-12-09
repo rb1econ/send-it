@@ -31,7 +31,7 @@ See the section about [running tests](https://facebook.github.io/create-react-ap
 
 ### `yarn test:ci`
 
-Runs the tests on ci -- current use: I gave netlify the build command `yarn test:ci && yarn build` .<br />
+Runs the tests on ci. The current build command on netlify is `yarn test:ci && yarn build` .<br />
 
 ### `yarn build`
 
