@@ -4,6 +4,8 @@ This app uses firestore as storage for the messages. The really cool thing about
 
 Very, very little time was spent on styles and layout. If I were to prioritize forthcoming work on this app, I would put layout and some routing at the top of the list along with user accounts and prop types. In a future iteration I'd like to prevent the user from having to scroll to get to the message input as well as allowing the user to scroll up beyond the 10 message limit I put into the firestore query -- and load those older messages on scroll.
 
+There are three hardcoded users, which I found made for more realistic messaging and user logic than if there were only two. This means that the app could be very easily refactored and iterated on to have many more than three users.
+
 The tests are written with the help of react testing library -- which I found far more developer friendly than by brief experience with enzyme. Most of the tests stub out the DOA functions which are unit tested independently; so no actual db transactions occur when running yarn test. A more end-to-end test suite would involve setting up the firestore emulator.
 
 This app makes use of hooks rather than class components.
