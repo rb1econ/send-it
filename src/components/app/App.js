@@ -57,19 +57,24 @@ function App() {
         );
       });
   }
+  const marginAuto = {
+    marginLeft: "auto",
+    marginRight: "auto"
+  };
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
+      <h1>Send It</h1>
+      <p>a very, very simple messaging app</p>
+      <div>
         {userRecipient.user ? (
           userRecipient.recipient ? (
-            <>
+            <div>
               <Messaging data-testid="messaging-component" {...userRecipient} />
-              <div>
+              <div style={{ marginLeft: "-500px", marginBottom: "100px" }}>
                 <p>Select a Different Recipient</p>
                 {displayRecipientButtons(userRecipient.user.id)}
               </div>
-            </>
+            </div>
           ) : (
             <div>
               <h2>Hello {userRecipient.user.username}</h2>
@@ -78,20 +83,12 @@ function App() {
             </div>
           )
         ) : (
-          <div
-            style={{
-              marginLeft: "auto",
-              marginRight: "auto",
-              width: 500,
-              height: 500
-            }}
-            data-testid="select-user"
-          >
+          <div data-testid="select-user">
             <p>Select a user:</p>
             {displayUserButtons()}
           </div>
         )}
-      </header>
+      </div>
     </div>
   );
 }

@@ -53,13 +53,17 @@ function Messaging({ user, recipient }) {
     setCurrentText(e.target.value);
   };
   return (
-    <div>
+    <div style={{ width: "500px", maxHeight: "80vh" }}>
+      <h3>
+        Messages from {user.username} to {recipient.username}
+      </h3>
       <MessageContainer {...{ messageData, user }} />
 
       <form>
         <label>
           <p>Message to {recipient.username}:</p>
           <input
+            style={{ width: "500px" }}
             value={currentText}
             onChange={handleCurrentText}
             name="current-message"
