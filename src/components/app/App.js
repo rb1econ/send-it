@@ -62,7 +62,7 @@ function App() {
           userRecipient.recipient ? (
             <div>
               <Messaging data-testid="messaging-component" {...userRecipient} />
-              <div style={{ marginLeft: "-500px", marginBottom: "100px" }}>
+              <div style={{ marginBottom: "100px" }}>
                 <p>Select a Different Recipient</p>
                 {displayRecipientButtons(userRecipient.user.id)}
               </div>
