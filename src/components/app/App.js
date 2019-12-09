@@ -8,10 +8,6 @@ import { db } from "../../firebase.js";
 import { Messaging } from "../messaging/Messaging";
 
 function App() {
-  // const [state, setState] = useReducer(
-  //   (state, newState) => ({ ...state, ...newState }),
-  //   { messages: [] }
-  // );
   const userOptions = [
     { username: "User One", id: "staticId1" },
     { username: "User Two", id: "staticId2" },

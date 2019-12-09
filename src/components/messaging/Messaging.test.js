@@ -17,48 +17,107 @@ import { Messaging } from "./Messaging";
 const testUser = { username: "Test User One", id: "testUserId1" };
 const testRecipient = { username: "Test User Two", id: "testUserId2" };
 
-describe("sending messages", () => {
-  beforeEach(() => {
-    messagesDAO.add = jest.fn(() => Promise.resolve());
-    messagesDAO.loadMessages = jest.fn(() => {
-      const a = new Observable();
-
-      return combineLatest(a);
-    });
-  });
-  it("should enable the Send It button when text is present in input", async () => {
+describe("Messaging component", () => {
+  describe("sending and recieving messages", () => {
     const userRecipient = { user: testUser, recipient: testRecipient };
     const testText = "this is message text";
-    let container;
-    act(() => {
-      container = render(<Messaging {...userRecipient} />);
+    beforeEach(() => {
+      messagesDAO.add = jest.fn(() => Promise.resolve());
+      messagesDAO.loadMessages = jest.fn(() => combineLatest(new Observable()));
     });
-    expect(container.getByText("SEND IT").disabled).toBe(true);
-    act(() => {
-      fireEvent.change(container.getByLabelText("Your New Message Here:"), {
-        target: { value: testText }
+    it("should enable the Send It button when text is present in input", async () => {
+      let container;
+      act(() => {
+        container = render(<Messaging {...userRecipient} />);
       });
-    });
+      expect(container.getByText("SEND IT").disabled).toBe(true);
+      act(() => {
+        fireEvent.change(
+          container.getByLabelText(
+            `Message to ${userRecipient.recipient.username}:`
+          ),
+          {
+            target: { value: testText }
+          }
+        );
+      });
 
-    const sendButton = container.getByTestId("send-it");
-    expect(sendButton.disabled).toBe(false);
-    act(() => {
-      fireEvent.click(container.getByTestId("send-it"));
+      const sendButton = container.getByTestId("send-it");
+      expect(sendButton.disabled).toBe(false);
     });
-    expect(messagesDAO.add.mock.calls.length).toBe(1);
-    const addArg = messagesDAO.add.mock.calls[0][0];
-    expect(addArg.createdAt instanceof Date).toBe(true);
-    expect(typeof addArg.id).toBe("string");
-    delete addArg.id;
-    delete addArg.createdAt;
-    expect(addArg).toEqual({
-      text: testText,
-      userId: testUser.id,
-      recipientId: testRecipient.id
+    it("should call messagesDAO appropriately when the Send It button is clicked", async () => {
+      let container;
+      act(() => {
+        container = render(<Messaging {...userRecipient} />);
+      });
+      act(() => {
+        fireEvent.change(
+          container.getByLabelText(
+            `Message to ${userRecipient.recipient.username}:`
+          ),
+          {
+            target: { value: testText }
+          }
+        );
+      });
+      act(() => {
+        fireEvent.click(container.getByTestId("send-it"));
+      });
+      expect(messagesDAO.add.mock.calls.length).toBe(1);
+      const addArg = messagesDAO.add.mock.calls[0][0];
+      expect(addArg.createdAt instanceof Date).toBe(true);
+      expect(typeof addArg.id).toBe("string");
+      delete addArg.id;
+      delete addArg.createdAt;
+      expect(addArg).toEqual({
+        text: testText,
+        userId: testUser.id,
+        recipientId: testRecipient.id
+      });
+      delete expect(
+        await wait(
+          () =>
+            container.getByLabelText(
+              `Message to ${userRecipient.recipient.username}:`
+            ).value
+        )
+      ).toBeFalsy();
     });
-    delete expect(
-      await wait(() => container.getByLabelText("Your New Message Here:").value)
-    ).toBeFalsy();
+    it("changing the recipient call unsubscribes from observable and calls loadMessages appropriately", () => {
+      const unsubscribeMock = jest.fn();
+      const subscribeMock = jest.fn(() => {
+        return { unsubscribe: unsubscribeMock };
+      });
+
+      messagesDAO.loadMessages = jest.fn(() => {
+        return {
+          subscribe: subscribeMock
+        };
+      });
+
+      let container;
+      act(() => {
+        container = render(<Messaging {...userRecipient} />);
+      });
+      expect(subscribeMock.mock.calls.length).toBe(1);
+      expect(messagesDAO.loadMessages.mock.calls[0]).toEqual([
+        userRecipient.user.id,
+        userRecipient.recipient.id
+      ]);
+      expect(unsubscribeMock.mock.calls.length).toBe(0);
+      const newRecip = { username: "New Recip", id: "newRecipId" };
+
+      act(() => {
+        container.rerender(
+          <Messaging {...{ ...userRecipient, recipient: newRecip }} />
+        );
+      });
+      expect(subscribeMock.mock.calls.length).toBe(2);
+      expect(messagesDAO.loadMessages.mock.calls[1]).toEqual([
+        userRecipient.user.id,
+        newRecip.id
+      ]);
+      expect(unsubscribeMock.mock.calls.length).toBe(1);
+    });
   });
-  it("should handle change to recipient by unsubscribing to observable and re-subscribing", () => {});
 });

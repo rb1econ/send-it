@@ -57,7 +57,7 @@ function Messaging({ user, recipient }) {
 
       <form>
         <label>
-          <p>Your New Message Here:</p>
+          <p>Message to {recipient.username}:</p>
           <input
             value={currentText}
             onChange={handleCurrentText}
