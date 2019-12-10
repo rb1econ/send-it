@@ -14,6 +14,10 @@ Note: This app will not work locally without the api key associated with the fir
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## Deployed Here:
+
+https://zen-mestorf-aeb237.netlify.com/
+
 ## Available Scripts
 
 In the project directory, you can run:
