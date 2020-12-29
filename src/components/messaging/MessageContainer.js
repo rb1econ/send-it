@@ -1,7 +1,7 @@
 import React from "react";
 import { MessageDisplay } from "./MessageDisplay";
-
-const MessageContainer = React.memo(({ messageData, user }) => {
+// React.memo
+const MessageContainer = ({ messageData, user }) => {
   return (
     <ul>
       {messageData.messages.length
@@ -11,6 +11,6 @@ const MessageContainer = React.memo(({ messageData, user }) => {
         : null}
     </ul>
   );
-});
+};
 
 export { MessageContainer };

@@ -19,9 +19,16 @@ function loadMessages(userId, recipientId) {
     .orderBy("createdAt", "desc")
     .limit(5);
 
+  // const sentMessages$ = collection(sentMessagesRef).pipe(
+  //   map(messages => messages.map(m => m.data()))
+  // );
   const sentMessages$ = collection(sentMessagesRef).pipe(
-    map(messages => messages.map(m => m.data()))
+    map(messages => {
+      // console.log(messages);
+      return messages.map(m => m.data());
+    })
   );
+
   const receivedMessages$ = collection(recievedMessagesRef).pipe(
     map(messages => messages.map(m => m.data()))
   );
